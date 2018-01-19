@@ -2,6 +2,8 @@ package coolweather.com.coollol.util;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +11,7 @@ import org.json.JSONObject;
 import coolweather.com.coollol.City;
 import coolweather.com.coollol.County;
 import coolweather.com.coollol.Province;
+import coolweather.com.coollol.gson.Weather;
 
 /**
  * Created by Administrator on 2018-01-17.
@@ -84,5 +87,19 @@ public class Utility {
         return false;
 
 
+    }
+    /*
+    * 将返回的JSON数据解析成Weather实体类
+    * */
+    public static Weather hanleWeatherRsponse(String response){
+        try {
+            JSONObject jsonObject=new JSONObject(response);
+            JSONArray jsonArray=jsonObject.getJSONArray("HeWeather");
+            String weatherContent=jsonArray.getJSONObject(0).toString();
+            return  new Gson().fromJson(weatherContent,Weather.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return  null;
     }
 }
